@@ -7,6 +7,15 @@ services:
       POSTGRES_PASSWORD: "Postgres2022!"
     ports:
       - "15432:5432"
+  db-migration:
+    build:
+      context: .
+      dockerfile: DockerfileFlyway
+    depends_on:
+      - postgres
+    restart: no
+    environment:
+      ENV: DEV
   transaction-service:
     build:
       context: .
@@ -14,6 +23,7 @@ services:
     ports:
       - "18080:8080"
     depends_on:
+      - db-migration
       - postgres
     restart: unless-stopped
     environment:

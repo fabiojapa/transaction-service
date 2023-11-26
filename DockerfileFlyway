@@ -1,0 +1,9 @@
+FROM maven:3.8.3-openjdk-17-slim AS builder
+
+WORKDIR /build
+COPY . /build
+ENV ENVIRONMENT=DEV
+
+RUN mvn clean package
+
+ENTRYPOINT mvn clean flyway:migrate -Dflyway.configFiles=flyway_${ENVIRONMENT}.conf
