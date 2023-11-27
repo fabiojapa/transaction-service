@@ -2,7 +2,7 @@ version: "3"
 
 services:
   postgres:
-    image: postgres
+    image: postgres:15-alpine
     environment:
       POSTGRES_PASSWORD: "Postgres2022!"
     ports:
@@ -15,7 +15,9 @@ services:
       - postgres
     restart: no
     environment:
-      ENV: DEV
+      FLYWAY_URL:
+      FLYWAY_USER:
+      FLYWAY_PASSWORD:
   transaction-service:
     build:
       context: .
