@@ -4,8 +4,7 @@ Transaction-service is a Rest API made with Java for dealing with financial tran
 
 ## Installation
 
-### Requirements
-Java 17, Maven 3.8, docker, docker-compose
+Requirements: Java 17, Maven 3.8, docker, docker-compose
 
 ```bash
 docker-compose build
@@ -17,10 +16,18 @@ docker-compose build
 docker-compose up
 ```
 
+## Requests
+Requirements: Postman
+
+Import the configuration file FIXME in postman
+
 ## APIs
 Endpoints are available at:
+
 POST http://localhost:18080/accounts
+
 GET http://localhost:18080/accounts/:accountId
+
 POST http://localhost:18080/transactions
 
 ## Contributing
