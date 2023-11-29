@@ -1,10 +1,13 @@
 package com.saka.transaction.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saka.transaction.dto.AccountDto;
 import com.saka.transaction.entity.Account;
 import com.saka.transaction.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,11 +16,15 @@ public class AccountService {
   private AccountRepository accountRepository;
   private ObjectMapper objectMapper;
 
-  public AccountService(AccountRepository accountRepository, ObjectMapper objectMapper) {
+  public AccountService(
+      AccountRepository accountRepository,
+      ObjectMapper objectMapper
+  ) {
     this.accountRepository = accountRepository;
     this.objectMapper = objectMapper;
   }
 
+  @Transactional
   public AccountDto create(AccountDto accountDto) {
     if (accountDto == null) {
       throw new IllegalArgumentException("Account DTO must not be null");

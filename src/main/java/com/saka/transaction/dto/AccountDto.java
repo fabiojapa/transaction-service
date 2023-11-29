@@ -1,11 +1,15 @@
 package com.saka.transaction.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
-public record AccountDto(
-    Long id,
+@Data
+public class AccountDto {
+
+    @JsonProperty("account_id")
+    private Long accountId;
+
     @JsonProperty("document_number")
-    String documentNumber
-) {
+    private String documentNumber;
 
 }
