@@ -29,11 +29,11 @@ public class Transaction implements Serializable {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "account_id", nullable = false)
-  private transient Account account;
+  private Account account;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "operation_type_id", nullable = false)
-  private transient OperationType operationType;
+  private OperationType operationType;
 
   @Column(name = "amount", nullable = false, precision = 10, scale = 2)
   private BigDecimal amount;
