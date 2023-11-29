@@ -47,6 +47,7 @@ public class TransactionService {
     transaction = transactionRepository.save(transaction);
     transactionDto.setTransactionId(transaction.getTransactionId());
     transactionDto.setAmount(transaction.getAmount());
+    transactionDto.setDescription(operationType.getDescription());
     return transactionDto;
   }
 

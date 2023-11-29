@@ -29,6 +29,7 @@ class TransactionServiceTest {
   public static final BigDecimal AMOUNT = BigDecimal.valueOf(123.45);
   public static final String SAQUE = "SAQUE";
   public static final int SAQUE_VALUE = -1;
+  public static final long TRANSACTION_ID = 1L;
   private TransactionService transactionService;
 
   @Mock
@@ -51,7 +52,7 @@ class TransactionServiceTest {
   @Test
   void create_OK() {
 
-    Account account = new Account(ACCOUNT_ID, "12345678900");
+    var account = new Account(ACCOUNT_ID, "12345678900");
     when(accountRepository.findById(ACCOUNT_ID))
         .thenReturn(
             Optional.of(account)
@@ -62,22 +63,18 @@ class TransactionServiceTest {
         .thenReturn(
             Optional.of(operationType)
         );
-    var transaction = new Transaction();
-    transaction.setTransactionId(1L);
-    transaction.setAccount(account);
-    transaction.setOperationType(operationType);
     BigDecimal amount = AMOUNT.multiply(BigDecimal.valueOf(SAQUE_VALUE));
-    transaction.setAmount(amount);
-    transaction.setEventDate(LocalDateTime.now());
+    var transaction = createTransactionObject(account, operationType, amount);
     when(transactionRepository.save(Mockito.any(Transaction.class)))
         .thenReturn(transaction);
 
-    TransactionDto transactionDto = TransactionDto
-        .builder()
-        .accountId(ACCOUNT_ID)
-        .operationTypeId(OPERATION_TYPE_ID)
-        .amount(AMOUNT)
-        .build();
+    var transactionDto = new TransactionDto(
+        null,
+        ACCOUNT_ID,
+        OPERATION_TYPE_ID,
+        SAQUE,
+        AMOUNT
+    );
     TransactionDto transactionDtoSaved = transactionService.create(transactionDto);
     assertEquals(amount, transactionDtoSaved.getAmount());
     assertNotNull(transactionDtoSaved.getTransactionId());
@@ -88,18 +85,33 @@ class TransactionServiceTest {
 
   }
 
+  private Transaction createTransactionObject(
+      Account account,
+      OperationType operationType,
+      BigDecimal amount
+  ) {
+    var transaction = new Transaction();
+    transaction.setTransactionId(TRANSACTION_ID);
+    transaction.setAccount(account);
+    transaction.setOperationType(operationType);
+    transaction.setAmount(amount);
+    transaction.setEventDate(LocalDateTime.now());
+    return transaction;
+  }
+
   @Test
   void create_AccountNotFound() {
     when(accountRepository.findById(ACCOUNT_ID))
         .thenReturn(
             Optional.ofNullable(null)
         );
-    TransactionDto transactionDto = TransactionDto
-        .builder()
-        .accountId(ACCOUNT_ID)
-        .operationTypeId(OPERATION_TYPE_ID)
-        .amount(AMOUNT)
-        .build();
+    var transactionDto = new TransactionDto(
+        null,
+        ACCOUNT_ID,
+        OPERATION_TYPE_ID,
+        SAQUE,
+        AMOUNT
+    );
     EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
       transactionService.create(transactionDto);
     });
@@ -115,7 +127,7 @@ class TransactionServiceTest {
 
   @Test
   void create_OperationTypeNotFound() {
-    Account account = new Account(ACCOUNT_ID, "12345678900");
+    var account = new Account(ACCOUNT_ID, "12345678900");
     when(accountRepository.findById(ACCOUNT_ID))
         .thenReturn(
             Optional.of(account)
@@ -124,12 +136,13 @@ class TransactionServiceTest {
         .thenReturn(
             Optional.ofNullable(null)
         );
-    TransactionDto transactionDto = TransactionDto
-        .builder()
-        .accountId(ACCOUNT_ID)
-        .operationTypeId(OPERATION_TYPE_ID)
-        .amount(AMOUNT)
-        .build();
+    var transactionDto = new TransactionDto(
+        null,
+        ACCOUNT_ID,
+        OPERATION_TYPE_ID,
+        SAQUE,
+        AMOUNT
+    );
     EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
       transactionService.create(transactionDto);
     });

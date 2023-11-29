@@ -1,17 +1,15 @@
 package com.saka.transaction.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransactionDto {
 
   @JsonProperty("transaction_id")
@@ -24,6 +22,8 @@ public class TransactionDto {
   @NotNull
   @JsonProperty("operation_type_id")
   private Integer operationTypeId;
+
+  private String description;
 
   @NotNull
   private BigDecimal amount;
