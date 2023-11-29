@@ -30,6 +30,12 @@ GET http://localhost:18080/accounts/:accountId
 
 POST http://localhost:18080/transactions
 
+## Postman
+There is a file to be imported in Postman:
+```
+src/test/resources/postman/transactions.postman_collection.json
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
