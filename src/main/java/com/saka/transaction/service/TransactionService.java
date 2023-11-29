@@ -46,6 +46,7 @@ public class TransactionService {
     var transaction = createTransactionObject(transactionDto, account, operationType);
     transaction = transactionRepository.save(transaction);
     transactionDto.setTransactionId(transaction.getTransactionId());
+    transactionDto.setAmount(transaction.getAmount());
     return transactionDto;
   }
 
@@ -69,13 +70,12 @@ public class TransactionService {
    * @return account
    */
   private Account findAccountById(Long accountId) {
-    var account = accountRepository.findById(accountId)
+    return accountRepository.findById(accountId)
         .orElseThrow(
             () -> new EntityNotFoundException(
                 "Account not found with id: " + accountId
             )
         );
-    return account;
   }
 
   /**

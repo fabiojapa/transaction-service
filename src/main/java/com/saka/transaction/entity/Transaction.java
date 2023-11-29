@@ -1,6 +1,5 @@
 package com.saka.transaction.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,12 +11,16 @@ import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction implements Serializable {
 
   @Id
@@ -26,11 +29,11 @@ public class Transaction implements Serializable {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "account_id", nullable = false)
-  private Account account;
+  private transient Account account;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "operation_type_id", nullable = false)
-  private OperationType operationType;
+  private transient OperationType operationType;
 
   @Column(name = "amount", nullable = false, precision = 10, scale = 2)
   private BigDecimal amount;
