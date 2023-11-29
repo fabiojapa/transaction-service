@@ -1,6 +1,9 @@
 package com.saka.transaction.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.saka.transaction.dto.TransactionDto;
 import com.saka.transaction.entity.Account;
@@ -9,6 +12,7 @@ import com.saka.transaction.entity.Transaction;
 import com.saka.transaction.repository.AccountRepository;
 import com.saka.transaction.repository.OperationTypeRepository;
 import com.saka.transaction.repository.TransactionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -45,16 +49,16 @@ class TransactionServiceTest {
   }
 
   @Test
-  void create() {
+  void create_OK() {
 
     Account account = new Account(ACCOUNT_ID, "12345678900");
-    Mockito.when(accountRepository.findById(ACCOUNT_ID))
+    when(accountRepository.findById(ACCOUNT_ID))
         .thenReturn(
             Optional.of(account)
         );
 
     OperationType operationType = new OperationType(OPERATION_TYPE_ID, SAQUE, SAQUE_VALUE);
-    Mockito.when(operationTypeRepository.findById(OPERATION_TYPE_ID))
+    when(operationTypeRepository.findById(OPERATION_TYPE_ID))
         .thenReturn(
             Optional.of(operationType)
         );
@@ -65,7 +69,7 @@ class TransactionServiceTest {
     BigDecimal amount = AMOUNT.multiply(BigDecimal.valueOf(SAQUE_VALUE));
     transaction.setAmount(amount);
     transaction.setEventDate(LocalDateTime.now());
-    Mockito.when(transactionRepository.save(Mockito.any(Transaction.class)))
+    when(transactionRepository.save(Mockito.any(Transaction.class)))
         .thenReturn(transaction);
 
     TransactionDto transactionDto = TransactionDto
@@ -78,9 +82,64 @@ class TransactionServiceTest {
     assertEquals(amount, transactionDtoSaved.getAmount());
     assertNotNull(transactionDtoSaved.getTransactionId());
 
-    Mockito.verify(accountRepository).findById(ACCOUNT_ID);
-    Mockito.verify(operationTypeRepository).findById(OPERATION_TYPE_ID);
-    Mockito.verify(transactionRepository).save(Mockito.any(Transaction.class));
+    verify(accountRepository).findById(ACCOUNT_ID);
+    verify(operationTypeRepository).findById(OPERATION_TYPE_ID);
+    verify(transactionRepository).save(Mockito.any(Transaction.class));
 
   }
+
+  @Test
+  void create_AccountNotFound() {
+    when(accountRepository.findById(ACCOUNT_ID))
+        .thenReturn(
+            Optional.ofNullable(null)
+        );
+    TransactionDto transactionDto = TransactionDto
+        .builder()
+        .accountId(ACCOUNT_ID)
+        .operationTypeId(OPERATION_TYPE_ID)
+        .amount(AMOUNT)
+        .build();
+    EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+      transactionService.create(transactionDto);
+    });
+    assertTrue(exception.getMessage().contains(Long.toString(ACCOUNT_ID)));
+
+    verify(accountRepository).findById(ACCOUNT_ID);
+    verify(operationTypeRepository, times(0))
+        .findById(OPERATION_TYPE_ID);
+    verify(transactionRepository, times(0))
+        .save(Mockito.any(Transaction.class));
+
+  }
+
+  @Test
+  void create_OperationTypeNotFound() {
+    Account account = new Account(ACCOUNT_ID, "12345678900");
+    when(accountRepository.findById(ACCOUNT_ID))
+        .thenReturn(
+            Optional.of(account)
+        );
+    when(operationTypeRepository.findById(OPERATION_TYPE_ID))
+        .thenReturn(
+            Optional.ofNullable(null)
+        );
+    TransactionDto transactionDto = TransactionDto
+        .builder()
+        .accountId(ACCOUNT_ID)
+        .operationTypeId(OPERATION_TYPE_ID)
+        .amount(AMOUNT)
+        .build();
+    EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+      transactionService.create(transactionDto);
+    });
+    assertTrue(exception.getMessage().contains(Integer.toString(OPERATION_TYPE_ID)));
+
+    verify(accountRepository).findById(ACCOUNT_ID);
+    verify(operationTypeRepository).findById(OPERATION_TYPE_ID);
+    verify(transactionRepository, times(0))
+        .save(Mockito.any(Transaction.class));
+
+  }
+
 }
