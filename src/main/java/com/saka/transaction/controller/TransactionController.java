@@ -2,6 +2,7 @@ package com.saka.transaction.controller;
 
 import com.saka.transaction.dto.TransactionDto;
 import com.saka.transaction.service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/v1/transactions")
+@RequestMapping(path = "/transactions")
 public class TransactionController {
 
   private TransactionService transactionService;
@@ -20,7 +21,7 @@ public class TransactionController {
   }
 
   @PostMapping
-  public @ResponseBody ResponseEntity<TransactionDto> create(@RequestBody TransactionDto transactionDto) {
+  public @ResponseBody ResponseEntity<TransactionDto> create(@Valid @RequestBody TransactionDto transactionDto) {
     transactionDto = transactionService.create(transactionDto);
     return ResponseEntity.ok(transactionDto);
   }

@@ -2,6 +2,7 @@ package com.saka.transaction.controller;
 
 import com.saka.transaction.dto.AccountDto;
 import com.saka.transaction.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class AccountController {
   }
 
   @PostMapping
-  public @ResponseBody ResponseEntity<AccountDto> create(@RequestBody AccountDto accountDto) {
+  public @ResponseBody ResponseEntity<AccountDto> create(@Valid @RequestBody AccountDto accountDto) {
     accountDto = accountService.create(accountDto);
     return ResponseEntity.ok(accountDto);
   }

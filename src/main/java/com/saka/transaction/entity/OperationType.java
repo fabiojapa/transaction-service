@@ -21,6 +21,10 @@ public class OperationType {
 
   private String description;
 
+  /**
+   * 1: credit
+   * -1: debit
+   */
   private Integer value;
 
 }

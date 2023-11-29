@@ -1,15 +1,16 @@
 package com.saka.transaction.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saka.transaction.dto.AccountDto;
 import com.saka.transaction.entity.Account;
 import com.saka.transaction.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service to deal with the Entity Account
+ */
 @Service
 public class AccountService {
 
@@ -24,18 +25,28 @@ public class AccountService {
     this.objectMapper = objectMapper;
   }
 
+  /**
+   * Creates the record Account in the DB
+   * @param accountDto
+   * @return accountDto
+   */
   @Transactional
   public AccountDto create(AccountDto accountDto) {
     if (accountDto == null) {
       throw new IllegalArgumentException("Account DTO must not be null");
     }
-    Account account = objectMapper.convertValue(accountDto, Account.class);
-    Account savedAccount = accountRepository.save(account);
-    return objectMapper.convertValue(savedAccount, AccountDto.class);
+    var account = objectMapper.convertValue(accountDto, Account.class);
+    account = accountRepository.save(account);
+    return objectMapper.convertValue(account, AccountDto.class);
   }
 
+  /**
+   * Finds the entity Account in the DB
+   * @param id
+   * @return accountDto
+   */
   public AccountDto findById(Long id) {
-    Account account = accountRepository.findById(id)
+    var account = accountRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
     return objectMapper.convertValue(account, AccountDto.class);
   }
