@@ -1,8 +1,8 @@
 package com.saka.transaction.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saka.transaction.dto.AccountDto;
 import com.saka.transaction.entity.Account;
-import com.saka.transaction.mapper.AccountMapper;
 import com.saka.transaction.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,26 +11,26 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
   private AccountRepository accountRepository;
-  private final AccountMapper accountMapper;
+  private ObjectMapper objectMapper;
 
-  public AccountService(AccountRepository accountRepository) {
+  public AccountService(AccountRepository accountRepository, ObjectMapper objectMapper) {
     this.accountRepository = accountRepository;
-    this.accountMapper = AccountMapper.INSTANCE;
+    this.objectMapper = objectMapper;
   }
 
   public AccountDto create(AccountDto accountDto) {
     if (accountDto == null) {
       throw new IllegalArgumentException("Account DTO must not be null");
     }
-    Account account = accountMapper.toEntity(accountDto);
+    Account account = objectMapper.convertValue(accountDto, Account.class);
     Account savedAccount = accountRepository.save(account);
-    return accountMapper.toDto(savedAccount);
+    return objectMapper.convertValue(savedAccount, AccountDto.class);
   }
 
   public AccountDto findById(Long id) {
     Account account = accountRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + id));
-    return accountMapper.toDto(account);
+    return objectMapper.convertValue(account, AccountDto.class);
   }
 
 }

@@ -1,5 +1,11 @@
 package com.saka.transaction.dto;
 
-public record AccountDto() {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AccountDto(
+    Long id,
+    @JsonProperty("document_number")
+    String documentNumber
+) {
 
 }

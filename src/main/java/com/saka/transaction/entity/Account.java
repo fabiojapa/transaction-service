@@ -11,4 +11,7 @@ public class Account {
   @Column(name = "account_id")
   private Long id;
 
+  @Column(name = "document_number")
+  private String documentNumber;
+
 }
