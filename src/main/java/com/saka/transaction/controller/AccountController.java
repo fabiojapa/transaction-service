@@ -1,5 +1,7 @@
 package com.saka.transaction.controller;
 
+import com.saka.transaction.dto.AccountDto;
+import com.saka.transaction.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/v1/accounts")
 public class AccountController {
 
+  private AccountService accountService;
+
+  public AccountController(AccountService accountService) {
+    this.accountService = accountService;
+  }
+
   @PostMapping
-  public @ResponseBody ResponseEntity<Long> create(@RequestBody Long id) {
-    return ResponseEntity.ok(id);
+  public @ResponseBody ResponseEntity<AccountDto> create(@RequestBody AccountDto accountDto) {
+    accountDto = accountService.create(accountDto);
+    return ResponseEntity.ok(accountDto);
   }
 
   @GetMapping("/{id}")
-  public @ResponseBody ResponseEntity<Long> findById(@PathVariable Long id) {
-    return ResponseEntity.ok(id);
+  public @ResponseBody ResponseEntity<AccountDto> findById(@PathVariable Long id) {
+    AccountDto accountDto = accountService.findById(id);
+    return ResponseEntity.ok(accountDto);
   }
 
 }

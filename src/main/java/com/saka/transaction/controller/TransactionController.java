@@ -1,5 +1,7 @@
 package com.saka.transaction.controller;
 
+import com.saka.transaction.dto.TransactionDto;
+import com.saka.transaction.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,9 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/v1/transactions")
 public class TransactionController {
 
+  private TransactionService transactionService;
+
+  public TransactionController(TransactionService transactionService) {
+    this.transactionService = transactionService;
+  }
+
   @PostMapping
-  public @ResponseBody ResponseEntity<Long> create(@RequestBody Long id) {
-    return ResponseEntity.ok(id);
+  public @ResponseBody ResponseEntity<TransactionDto> create(@RequestBody TransactionDto transactionDto) {
+    transactionDto = transactionService.create(transactionDto);
+    return ResponseEntity.ok(transactionDto);
   }
 
 }
