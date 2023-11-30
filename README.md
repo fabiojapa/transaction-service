@@ -5,9 +5,8 @@ Transaction Service is a Spring Boot-based microservice designed to manage finan
 
 ## Features
 - Create new transactions with various attributes such as account ID, amount, and operation type.
-- Retrieve transaction details by ID.
-- List all transactions with filtering and pagination support.
-- Robust error handling and validation mechanisms.
+- Create new accounts.
+- Retrieve accounts details by ID.
 
 ## Technology Stack
 - **Spring Boot**: For creating stand-alone, production-grade Spring-based applications.
