@@ -42,7 +42,7 @@ docker-compose up --build
 ```
 This will start the application along with the PostgreSQL database.
 
-4. Accessing the API:
+4. **Accessing the API:**
 
 Once the application is running, the API can be accessed via http://localhost:8080/.
 
