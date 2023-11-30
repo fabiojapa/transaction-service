@@ -22,6 +22,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+/**
+ * Testing the business rules {@link TransactionService}
+ */
 class TransactionServiceTest {
 
   public static final long ACCOUNT_ID = 1L;

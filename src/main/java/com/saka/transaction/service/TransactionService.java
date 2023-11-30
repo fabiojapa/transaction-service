@@ -14,6 +14,9 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service to deal with the Entity {@link Transaction}
+ */
 @Service
 public class TransactionService {
 

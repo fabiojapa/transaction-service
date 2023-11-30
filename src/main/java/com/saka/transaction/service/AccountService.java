@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 /**
- * Service to deal with the Entity Account
+ * Service to deal with the Entity {@link Account}
  */
 @Service
 public class AccountService {

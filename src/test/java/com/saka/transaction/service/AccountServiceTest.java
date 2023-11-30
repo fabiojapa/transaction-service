@@ -16,6 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Testing the business rules {@link AccountService}
+ */
 class AccountServiceTest {
 
   public static final String DOC_NUMBER = "12345678900";

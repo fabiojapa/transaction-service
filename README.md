@@ -1,6 +1,6 @@
 # Transaction-service
 
-Transaction-service is a Rest API made with Java for dealing with financial transactions.
+Transaction-service is a Rest API made with Java to deal with financial transactions.
 
 ## Installation
 
@@ -15,11 +15,6 @@ docker-compose build
 ```bash
 docker-compose up
 ```
-
-## Requests
-Requirements: Postman
-
-Import the configuration file FIXME in postman
 
 ## APIs
 Endpoints are available at:
