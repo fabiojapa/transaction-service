@@ -1,45 +1,84 @@
-# Transaction-service
+# Transaction Service
 
-Transaction-service is a Rest API made with Java to deal with financial transactions.
+## Overview
+Transaction Service is a Spring Boot-based microservice designed to manage financial transactions. It provides a robust API for creating, retrieving, and managing transactions in a scalable and efficient manner.
 
-## Installation
+## Features
+- Create new transactions with various attributes such as account ID, amount, and operation type.
+- Retrieve transaction details by ID.
+- List all transactions with filtering and pagination support.
+- Robust error handling and validation mechanisms.
 
-Requirements: Java 17, Maven 3.8, docker, docker-compose
+## Technology Stack
+- **Spring Boot**: For creating stand-alone, production-grade Spring-based applications.
+- **PostgreSQL**: As the primary database for storing transaction data.
+- **Docker**: For containerizing the application and ensuring consistency across various environments.
+- **JUnit & Mockito**: For unit testing and ensuring code quality.
 
+## Getting Started
+
+### Prerequisites
+- Java 17 or later
+- Maven 3.8 or later
+- Docker, docker-compose
+- PostgreSQL (optional for local setup)
+
+### Running the Application
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/fabiojapa/transaction-service.git
+   cd transaction-service
+
+2. **Build the Application:**
 ```bash
-docker-compose build
+mvn clean install
 ```
 
-## Usage
+3. **Run Using Docker:**
 
 ```bash
-docker-compose up
+docker-compose up --build
 ```
+This will start the application along with the PostgreSQL database.
 
-## APIs
-Endpoints are available at:
+4. Accessing the API:
 
-POST http://localhost:18080/accounts
+Once the application is running, the API can be accessed via http://localhost:8080/.
 
-GET http://localhost:18080/accounts/:accountId
+Use tools like Postman or Swagger to interact with the API.
 
-POST http://localhost:18080/transactions
-
-## Postman
+### Postman
 There is a file to be imported in Postman:
 ```
 src/test/resources/postman/transactions.postman_collection.json
 ```
 
-## Contributing
+
+### API Documentation
+API documentation can be accessed at http://localhost:8080/swagger-ui/index.html
+
+### Development
+#### Setting Up the Development Environment
+Import the project into your favorite IDE as a Maven project.
+Ensure Lombok is installed in your IDE for proper handling of boilerplate code.
+Configure a local PostgreSQL database or use the provided Docker setup(docker-compose  up -d db-migration --build).
+
+#### Running Tests
+Execute the following command to run the unit tests:
+
+```bash
+mvn test
+```
+
+### Contribution
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## Author
-
+### Contact
 Fabio Takeshi Sakamoto
 
 fabiojapa@gmail.com
